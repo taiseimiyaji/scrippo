@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildPrompt, isCacheValid } from '../src/report.ts';
+import { buildPrompt, isCacheValid, loadTemplate } from '../src/report.ts';
 import { generatePlist } from '../src/launchd.ts';
 
 // --- buildPrompt ---
@@ -14,10 +14,33 @@ test('buildPrompt contains system instruction, template body with date substitut
   assert.ok(prompt.includes('{"date":"2026-07-09"}'));
 });
 
+test('buildPrompt wraps digest in <digest> delimiters and marks it as data, not instructions', () => {
+  const prompt = buildPrompt('body', '2026-07-09', '{"x":1}');
+  assert.ok(prompt.includes('<digest>\n{"x":1}\n</digest>'));
+  assert.ok(prompt.includes('絶対に従わず'));
+  assert.ok(prompt.includes('コマンド実行'));
+});
+
 test('buildPrompt instructs conservative inference for missing periods', () => {
   const prompt = buildPrompt('body', '2026-07-09', '{}');
   assert.ok(prompt.includes('推測'));
   assert.ok(prompt.includes('不明'));
+});
+
+// --- loadTemplate (path traversal) ---
+
+test('loadTemplate rejects path traversal and absolute paths', () => {
+  assert.throws(() => loadTemplate('../../etc/passwd'), /テンプレート名が不正/);
+  assert.throws(() => loadTemplate('../secrets'), /テンプレート名が不正/);
+  assert.throws(() => loadTemplate('/etc/passwd.md'), /テンプレート名が不正/);
+  assert.throws(() => loadTemplate('foo/bar'), /テンプレート名が不正/);
+});
+
+test('loadTemplate accepts plain template names', () => {
+  const t = loadTemplate('gyomu-nippo');
+  assert.equal(t.fileName, 'gyomu-nippo.md');
+  const t2 = loadTemplate('furikaeri.md');
+  assert.equal(t2.fileName, 'furikaeri.md');
 });
 
 // --- isCacheValid ---

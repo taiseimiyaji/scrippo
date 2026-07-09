@@ -1,12 +1,15 @@
 name: Publish to npm
 
-# GitHub Release を publish すると npm へ公開する。
+# GitHub Release を publish すると npm へ公開する(workflow_dispatch で手動再実行も可)。
 # 認証は npm の Trusted Publishing (GitHub Actions OIDC) を使用 — トークン不要・provenance 付き。
 # 事前に npmjs.com のパッケージ設定で Trusted Publisher として
 # このリポジトリ + このワークフローファイル名を登録しておくこと。
+# 注: Node 24 同梱の npm (>=11.6) が Trusted Publishing 要件 (>=11.5) を満たすため
+#     npm 自体のアップグレードは行わない(`npm install -g npm` は同梱 npm を壊すことがある)。
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -21,13 +24,12 @@ jobs:
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
-      - name: Update npm (Trusted Publishing requires >= 11.5)
-        run: npm install -g npm@latest
       - name: Install
         run: npm ci
       - name: Test
         run: npm test
       - name: Check version matches release tag
+        if: github.event_name == 'release'
         run: |
           PKG_VERSION=$(node -p "require('./package.json').version")
           TAG="${GITHUB_REF_NAME#v}"

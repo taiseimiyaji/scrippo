@@ -1,19 +1,21 @@
 {
   "name": "scrippo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Your screen, distilled into a daily report. — screen + 日報 = scrippo",
   "type": "module",
   "bin": {
-    "scrippo": "src/cli.ts"
+    "scrippo": "dist/cli.js"
   },
   "files": [
-    "src",
+    "dist",
     "ocr-src",
     "templates"
   ],
   "scripts": {
     "test": "node --test 'test/*.test.ts'",
     "build:ocr": "./ocr-src/build.sh",
+    "build:js": "rm -rf dist && tsc -p tsconfig.build.json",
+    "prepack": "npm run build:js",
     "postinstall": "./ocr-src/build.sh"
   },
   "repository": {
@@ -43,5 +45,8 @@
   },
   "dependencies": {
     "@openai/codex-sdk": "^0.143.0"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
   }
 }

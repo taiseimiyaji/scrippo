@@ -1,0 +1,47 @@
+{
+  "name": "scrippo",
+  "version": "1.0.0",
+  "description": "Your screen, distilled into a daily report. — screen + 日報 = scrippo",
+  "type": "module",
+  "bin": {
+    "scrippo": "src/cli.ts"
+  },
+  "files": [
+    "src",
+    "ocr-src",
+    "templates"
+  ],
+  "scripts": {
+    "test": "node --test 'test/*.test.ts'",
+    "build:ocr": "./ocr-src/build.sh",
+    "postinstall": "./ocr-src/build.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taiseimiyaji/scrippo.git"
+  },
+  "homepage": "https://github.com/taiseimiyaji/scrippo#readme",
+  "bugs": {
+    "url": "https://github.com/taiseimiyaji/scrippo/issues"
+  },
+  "keywords": [
+    "macos",
+    "ocr",
+    "daily-report",
+    "nippo",
+    "screenshot",
+    "cli",
+    "vision"
+  ],
+  "author": "Taisei Miyaji",
+  "license": "MIT",
+  "os": [
+    "darwin"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "@openai/codex-sdk": "^0.143.0"
+  }
+}

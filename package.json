@@ -1,6 +1,6 @@
 {
   "name": "scrippo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Your screen, distilled into a daily report. — screen + 日報 = scrippo",
   "type": "module",
   "bin": {

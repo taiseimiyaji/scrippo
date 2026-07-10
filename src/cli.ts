@@ -5,6 +5,7 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import readline from 'node:readline/promises';
+import { fileURLToPath } from 'node:url';
 import { runCaptureOnce, captureMain } from './capture.ts';
 import { runReport, listTemplates } from './report.ts';
 import { loadAgent, unloadAgent, isAgentLoaded, launchdLabel } from './launchd.ts';
@@ -20,7 +21,7 @@ import {
 } from './util.ts';
 
 const OCR_BIN = path.join(import.meta.dirname, '..', 'bin', 'ocr');
-const CLI_PATH = path.join(import.meta.dirname, 'cli.ts');
+const CLI_PATH = fileURLToPath(import.meta.url);
 
 const USAGE = `使い方: scrippo <command>
 

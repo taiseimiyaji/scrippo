@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "test": "node --test 'test/*.test.ts'",
+    "typecheck": "tsc -p tsconfig.build.json --noCheck false --noEmit --skipLibCheck --types node",
     "build:ocr": "./ocr-src/build.sh",
     "build:js": "rm -rf dist && tsc -p tsconfig.build.json",
     "prepack": "npm run build:js",
@@ -44,9 +45,10 @@
     "node": ">=24"
   },
   "dependencies": {
-    "@openai/codex-sdk": "^0.143.0"
+    "@openai/codex-sdk": "^0.164.0"
   },
   "devDependencies": {
+    "@types/node": "^24.19.2",
     "typescript": "^7.0.2"
   }
 }

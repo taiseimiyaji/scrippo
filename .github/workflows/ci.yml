@@ -21,6 +21,8 @@ jobs:
         run: npm ci
       - name: Test
         run: npm test
+      - name: Typecheck application sources
+        run: npm run typecheck
       - name: Build JS (same as prepack)
         run: npm run build:js
       - name: Verify package contents

@@ -26,4 +26,4 @@ jobs:
       - name: Build JS (same as prepack)
         run: npm run build:js
       - name: Verify package contents
-        run: npm publish --dry-run
+        run: npm pack --dry-run
